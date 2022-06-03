@@ -10,7 +10,7 @@ html
       rel="stylesheet"
       )
   body 
-    .b-main
+    #figma-import-main.b-main
       .container 
         .row 
           .col-xs-12
@@ -43,6 +43,8 @@ html
                 ) Импортировать
       #figma-import-loader.b-loader.visually-hidden
         .spinner-border.text-info
-          span.visually-hidden
+          span.visually-hidden 
+
+    #figma-import-content
 
   script(type='text/javascript' src='/scripts/main.js')

@@ -1,10 +1,13 @@
+var head = document.getElementsByTagName("head")[0];
+var figmaImportMain = document.getElementById("figma-import-main");
 var figmaImportButton = document.getElementById("figma-import-button");
 var figmaImportUrl = document.getElementById("figma-import-url");
 var figmaImportToken = document.getElementById("figma-import-token");
 var figmaImportAlertWrongUrl = document.getElementById("figma-import-alert-wrong-url");
 var figmaImportSelect = document.getElementById("figma-import-select");
 var figmaImportLoader = document.getElementById("figma-import-loader");
-
+var figmaImportContent = document.getElementById("figma-import-content");
+var loadedFontsString = "";
 
 figmaImportButton.addEventListener("click", function (event) {
 
@@ -17,10 +20,33 @@ figmaImportButton.addEventListener("click", function (event) {
 
   http.open("POST", urlString, true);
   http.onreadystatechange = function () {
-    if (http.readyState == 4 && http.status == 200) {
-      console.log(http.response);
+
+    if (http.readyState == XMLHttpRequest.DONE && http.status == 200) {
+
+      var resp = JSON.parse(http.response);
       figmaImportLoader.classList.add("visually-hidden");
-      // debugger;
+      figmaImportMain.classList.add("visually-hidden");
+
+      if (resp.type == "html") {
+
+        figmaImportContent.innerHTML = resp.content;
+
+      } else {
+
+        figmaImportContent.innerHTML = JSON.stringify(resp.content);
+
+      }
+
+      if (resp.fonts) {
+
+        if (resp.fonts.length > 0) {
+
+          addLoadedFontsToHead(resp.fonts);
+
+        }
+
+      }
+
     }
   };
   http.send(null);
@@ -98,5 +124,26 @@ var getFigmaImportUrlObject = function () {
   };
 
   return url;
+
+};
+
+
+// подгрузка шрифтов
+var addLoadedFontsToHead = function (fonts) {
+
+  for (var i = 0; i < fonts.length; i++) {
+
+    var font = fonts[i];
+
+    var link = document.createElement('link');
+    link.type = 'text/css';
+    link.rel = 'stylesheet';
+
+    document.head.appendChild(link);
+
+    link.href = "https://fonts.googleapis.com/css2?family=" + font + ":ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&&display=swap";
+
+  }
+
 
 };
