@@ -15,7 +15,7 @@ figmaImportButton.addEventListener("click", function (event) {
 
   var url = getFigmaImportUrlObject();
 
-  var urlString = "/" + url.fileid + "/" + url.nodeid + "/" + url.type;
+  var urlString = "/" + url.xfigmatoken + "/" + url.fileid + "/" + url.nodeid + "/" + url.type;
   var http = new XMLHttpRequest();
 
   http.open("POST", urlString, true);
@@ -96,6 +96,7 @@ var getFigmaImportUrlObject = function () {
   }
 
   var value = figmaImportUrl.value;
+  var xfigmatoken = figmaImportToken.value;
   
   var regexFileId = /\/file\/([a-z0-9A-Z]+\/)/g;
   var matchFileId = value.match(regexFileId);
@@ -120,7 +121,8 @@ var getFigmaImportUrlObject = function () {
   var url = {
     fileid: fileId,
     nodeid: nodeId,
-    type: resultType
+    type: resultType,
+    xfigmatoken: xfigmatoken
   };
 
   return url;

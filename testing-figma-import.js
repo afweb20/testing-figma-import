@@ -5,13 +5,14 @@ var app = express();
 var axios = require("axios");
 var path = require('path');
 
-app.post("/:project_id/:node_id/:type", function (req, res) {
+app.post("/:figma_token/:project_id/:node_id/:type", function (req, res) {
 
+  var figmaToken = req.params.figma_token;
   var projectId = req.params.project_id;
   var nodeId = req.params.node_id;
   var type = req.params.type;
 
-  axios.post('http://localhost:8000/' + projectId + '/' + nodeId + '/' + type, {}).then(function (response) {
+  axios.post('http://localhost:8000/' + figmaToken + '/' + projectId + '/' + nodeId + '/' + type, {}).then(function (response) {
     res.send(response.data);
   }).catch(function (error) {
     console.error(error);
