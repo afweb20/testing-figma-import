@@ -9,20 +9,17 @@ figmaImportButton.addEventListener("click", function (event) {
 
   var url = getFigmaImportUrlObject();
 
-  debugger;
+  var urlString = "/" + url.fileid + "/" + url.nodeid + "/" + url.type;
+  var http = new XMLHttpRequest();
 
-  // var url = "/html";
-  // var params = "";
-  // // var params = "somevariable=somevalue&anothervariable=anothervalue";
-  // var http = new XMLHttpRequest();
-
-  // http.open("POST", url + "?" + params, true);
-  // http.onreadystatechange = function () {
-  //   if (http.readyState == 4 && http.status == 200) {
-  //     console.log(http.response);
-  //   }
-  // };
-  // http.send(null);
+  http.open("POST", urlString, true);
+  http.onreadystatechange = function () {
+    if (http.readyState == 4 && http.status == 200) {
+      console.log(http.response);
+      // debugger;
+    }
+  };
+  http.send(null);
   
 
 });
@@ -92,8 +89,8 @@ var getFigmaImportUrlObject = function () {
 
   var url = {
     fileid: fileId,
-    nodeId: nodeId,
-    resultType: resultType
+    nodeid: nodeId,
+    type: resultType
   };
 
   return url;

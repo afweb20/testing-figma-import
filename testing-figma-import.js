@@ -5,11 +5,13 @@ var app = express();
 var axios = require("axios");
 var path = require('path');
 
-app.post("/sitecontent", function (req, res) {
+app.post("/:project_id/:node_id/:type", function (req, res) {
 
-  // получение sitecontent 
-  axios.post('http://localhost:8000/vfcLzhPe3Aowdak3AZPXK8/636:3/sitecontent', {}).then(function (response) {
-    console.log(response);
+  var projectId = req.params.project_id;
+  var nodeId = req.params.node_id;
+  var type = req.params.type;
+
+  axios.post('http://localhost:8000/' + projectId + '/' + nodeId + '/' + type, {}).then(function (response) {
     res.send(response.data);
   }).catch(function (error) {
     console.error(error);
@@ -17,17 +19,6 @@ app.post("/sitecontent", function (req, res) {
 
 });
 
-app.post("/html", function (req, res) {
-
-  // получение html 
-  axios.post('http://localhost:8000/vfcLzhPe3Aowdak3AZPXK8/636:3/html', {}).then(function (response) {
-    console.log(response);
-    res.send(response.data);
-  }).catch(function (error) {
-    console.error(error);
-  });
-
-});
 
 app.set('view engine', 'pug');
 
