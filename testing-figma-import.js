@@ -19,7 +19,6 @@ app.post("/:project_id/:node_id/:type", function (req, res) {
 
 });
 
-
 app.set('view engine', 'pug');
 
 app.use(express.static('public'));

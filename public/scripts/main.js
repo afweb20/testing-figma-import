@@ -3,9 +3,12 @@ var figmaImportUrl = document.getElementById("figma-import-url");
 var figmaImportToken = document.getElementById("figma-import-token");
 var figmaImportAlertWrongUrl = document.getElementById("figma-import-alert-wrong-url");
 var figmaImportSelect = document.getElementById("figma-import-select");
+var figmaImportLoader = document.getElementById("figma-import-loader");
 
 
 figmaImportButton.addEventListener("click", function (event) {
+
+  figmaImportLoader.classList.remove("visually-hidden");
 
   var url = getFigmaImportUrlObject();
 
@@ -16,6 +19,7 @@ figmaImportButton.addEventListener("click", function (event) {
   http.onreadystatechange = function () {
     if (http.readyState == 4 && http.status == 200) {
       console.log(http.response);
+      figmaImportLoader.classList.add("visually-hidden");
       // debugger;
     }
   };
