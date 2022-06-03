@@ -17,6 +17,18 @@ app.post("/sitecontent", function (req, res) {
 
 });
 
+app.post("/html", function (req, res) {
+
+  // получение html 
+  axios.post('http://localhost:8000/vfcLzhPe3Aowdak3AZPXK8/636:3/html', {}).then(function (response) {
+    console.log(response);
+    res.send(response.data);
+  }).catch(function (error) {
+    console.error(error);
+  });
+
+});
+
 app.set('view engine', 'pug');
 
 app.use(express.static('public'));

@@ -12,20 +12,27 @@ html
           .col-xs-12
             h1.mt-5.mb-5= message 
             form#figma-import-form
-              .mb-3 
+              #figma-import-alert-wrong-url.alert.alert-danger.visually-hidden Неверная ссылка
+              .mb-4 
                 label.form-label Ссылка на frame в Figma
-                input.form-control(
+                input#figma-import-url.form-control(
                   type="text"
                   placeholder="https://www.figma.com/file/..."
                   value="https://www.figma.com/file/vfcLzhPe3Aowdak3AZPXK8/EMPTY?node-id=636%3A3"
                 )
-              .mb-5 
+              .mb-4 
                 label.form-label API token
-                input.form-control(
+                input#figma-import-token.form-control(
                   type="text"
                   placeholder="749673-51gs0615-0e2e-****-****-************"
                   value="367581-50354355-43eb-4834-a520-da304dbe7ae3"
                 )
+              .mb-4 
+                label.form-label Что отобразить?
+                select#figma-import-select.form-select
+                  option(value="html") HTML 
+                  option(value="sitecontent") Sitecontent 
+                  option(value="himalaya") Himalaya 
               .mb-3 
                 button#figma-import-button.btn.btn-danger(
                   type="button"
