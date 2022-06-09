@@ -20,6 +20,18 @@ app.post("/:figma_token/:project_id/:node_id/:type", function (req, res) {
 
 });
 
+app.get("/:task_id", function (req, res) {
+
+  var taskId = req.params.task_id;
+
+  axios.get('http://localhost:8000/' + taskId, {}).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    console.error(error);
+  });
+
+});
+
 app.set('view engine', 'pug');
 
 app.use(express.static('public'));

@@ -13,6 +13,13 @@ figmaImportButton.addEventListener("click", function (event) {
 
   figmaImportLoader.classList.remove("visually-hidden");
 
+  figmaImportPostReq();
+
+});
+
+
+var figmaImportPostReq = function () {
+
   var url = getFigmaImportUrlObject();
 
   var urlString = "/" + url.xfigmatoken + "/" + url.fileid + "/" + url.nodeid + "/" + url.type;
@@ -24,9 +31,20 @@ figmaImportButton.addEventListener("click", function (event) {
     if (http.readyState == XMLHttpRequest.DONE && http.status == 200) {
 
       var resp = JSON.parse(http.response);
-      figmaImportLoader.classList.add("visually-hidden");
+      figmaImportLoader.classList.remove("visually-hidden");
       figmaImportMain.classList.add("visually-hidden");
 
+      if (resp) {
+        if (resp.state) {
+          if (resp.state == "pending") {
+            if (resp.task_id) {
+              figmaImportGetReq(resp.task_id);
+            }
+          }
+        }
+      }
+
+      /*
       if (resp.type == "html") {
 
         figmaImportContent.innerHTML = resp.content;
@@ -46,14 +64,20 @@ figmaImportButton.addEventListener("click", function (event) {
         }
 
       }
+      */
 
     }
   };
   http.send(null);
   
 
-});
+};
 
+var figmaImportGetReq = function (task_id) {
+
+  console.log("task_id", task_id);
+
+};
 
 var isValidHttpUrl = function (string) {
 
