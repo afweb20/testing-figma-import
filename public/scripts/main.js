@@ -38,33 +38,16 @@ var figmaImportPostReq = function () {
         if (resp.state) {
           if (resp.state == "pending") {
             if (resp.task_id) {
+
               figmaImportGetReq(resp.task_id);
+
             }
+          }
+          if (resp.state == "completed") {
+            figmaImportWriteContent(resp);
           }
         }
       }
-
-      /*
-      if (resp.type == "html") {
-
-        figmaImportContent.innerHTML = resp.content;
-
-      } else {
-
-        figmaImportContent.innerHTML = JSON.stringify(resp.content);
-
-      }
-
-      if (resp.fonts) {
-
-        if (resp.fonts.length > 0) {
-
-          addLoadedFontsToHead(resp.fonts);
-
-        }
-
-      }
-      */
 
     }
   };
@@ -73,11 +56,71 @@ var figmaImportPostReq = function () {
 
 };
 
+
+var figmaImportWriteContent = function (resp) {
+
+  figmaImportLoader.classList.add("visually-hidden");
+  figmaImportMain.classList.add("visually-hidden");
+
+  if (resp.result.type == "html") {
+
+    figmaImportContent.innerHTML = resp.result.content;
+
+  } else {
+
+    figmaImportContent.innerHTML = JSON.stringify(resp.result.content);
+
+  }
+
+  if (resp.result.fonts) {
+
+    if (resp.result.fonts.length > 0) {
+
+      addLoadedFontsToHead(resp.result.fonts);
+
+    }
+
+  }
+
+};
+
+
 var figmaImportGetReq = function (task_id) {
+
+
+  var intvl = setInterval(function () {
+
+
 
   console.log("task_id", task_id);
 
+  var urlString = "/" + task_id;
+  var http = new XMLHttpRequest();
+
+  http.open("GET", urlString, true);
+  http.onreadystatechange = function () {
+
+    if (http.readyState == XMLHttpRequest.DONE && http.status == 200) {
+
+      var resp = JSON.parse(http.response);
+
+      if (resp) {
+        if (resp.state) {
+          if (resp.state == "completed") {
+            clearInterval(intvl);
+            figmaImportWriteContent(resp);
+          }
+        }
+      }
+
+    }
+  };
+  http.send(null);
+
+}, 3000);
+
 };
+
 
 var isValidHttpUrl = function (string) {
 
