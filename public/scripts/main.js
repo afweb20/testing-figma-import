@@ -6,6 +6,7 @@ var figmaImportToken = document.getElementById("figma-import-token");
 var figmaImportAlertWrongUrl = document.getElementById("figma-import-alert-wrong-url");
 var figmaImportSelect = document.getElementById("figma-import-select");
 var figmaImportLoader = document.getElementById("figma-import-loader");
+var figmaImportLoaderText = document.getElementById("figma-import-loader-text");
 var figmaImportContent = document.getElementById("figma-import-content");
 var loadedFontsString = "";
 
@@ -32,6 +33,7 @@ var figmaImportPostReq = function () {
 
       var resp = JSON.parse(http.response);
       figmaImportLoader.classList.remove("visually-hidden");
+      figmaImportLoaderText.innerHTML = "Загружено на 0%";
       figmaImportMain.classList.add("visually-hidden");
 
       if (resp) {
@@ -90,10 +92,6 @@ var figmaImportGetReq = function (task_id) {
 
   var intvl = setInterval(function () {
 
-
-
-  console.log("task_id", task_id);
-
   var urlString = "/" + task_id;
   var http = new XMLHttpRequest();
 
@@ -111,13 +109,14 @@ var figmaImportGetReq = function (task_id) {
             figmaImportWriteContent(resp);
           }
         }
+        figmaImportLoaderText.innerHTML = "Загружено на " + resp.status + "%";
       }
 
     }
   };
   http.send(null);
 
-}, 3000);
+}, 1000);
 
 };
 
