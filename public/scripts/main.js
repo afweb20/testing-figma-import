@@ -23,7 +23,7 @@ var figmaImportPostReq = function () {
 
   var url = getFigmaImportUrlObject();
 
-  var urlString = "/" + url.xfigmatoken + "/" + url.fileid + "/" + url.nodeid + "/" + url.type;
+  var urlString = "/" + url.xfigmatoken + "/" + url.fileid + "/" + url.nodeid;
   var http = new XMLHttpRequest();
 
   http.open("POST", urlString, true);
@@ -64,15 +64,21 @@ var figmaImportWriteContent = function (resp) {
   figmaImportLoader.classList.add("visually-hidden");
   figmaImportMain.classList.add("visually-hidden");
 
-  if (resp.result.type == "html") {
+  if (resp.result.html) {
 
-    figmaImportContent.innerHTML = resp.result.content;
-
-  } else {
-
-    figmaImportContent.innerHTML = JSON.stringify(resp.result.content);
+    figmaImportContent.innerHTML = resp.result.html;
 
   }
+
+  // if (resp.result.type == "html") {
+
+  //   figmaImportContent.innerHTML = resp.result.content;
+
+  // } else {
+
+  //   figmaImportContent.innerHTML = JSON.stringify(resp.result.content);
+
+  // }
 
   if (resp.result.fonts) {
 
@@ -141,7 +147,6 @@ var getFigmaImportUrlObject = function () {
   var linkIsCorrect = true;
   var fileId = null;
   var nodeId = null;
-  var resultType = "html";
 
   if (figmaImportUrl.value && !isValidHttpUrl(figmaImportUrl.value)) {
 
@@ -178,16 +183,9 @@ var getFigmaImportUrlObject = function () {
     nodeId = matchNodeId[0].replace(regexNodeId, "$1");
   }
 
-  if (figmaImportSelect) {
-    if (figmaImportSelect.value) {
-      resultType = figmaImportSelect.value;
-    }
-  }
-
   var url = {
     fileid: fileId,
     nodeid: nodeId,
-    type: resultType,
     xfigmatoken: xfigmatoken
   };
 
