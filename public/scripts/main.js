@@ -12,11 +12,79 @@ var loadedFontsString = "";
 
 figmaImportButton.addEventListener("click", function (event) {
 
-  figmaImportLoader.classList.remove("visually-hidden");
+  // figmaImportLoader.classList.remove("visually-hidden");
 
-  figmaImportPostReq();
+  // figmaImportPostReq();
+  figmaImportForu();
 
 });
+
+var figmaImportForu = function () {
+
+  var urlStringImage = "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/67faf582-cdd0-461e-bafd-64ec69a3e8e0";
+  var xhr = new XMLHttpRequest();
+
+  xhr.open("GET", urlStringImage, true);
+  xhr.responseType = "blob";
+  xhr.onreadystatechange = function () {
+
+    if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+
+      // var resp = JSON.parse(http.response);
+      var image = xhr.response;
+
+      // var buffer = xhr.response;
+      // // var file = xhr.response;
+      console.log("image", image);
+
+      // var binary = '';
+      // var bytes = new Uint8Array( buffer );
+      // var len = bytes.byteLength;
+      // for (var i = 0; i < len; i++) {
+      //     binary += String.fromCharCode( bytes[ i ] );
+      // }
+      // console.log(window.btoa( binary ));
+
+
+      // var reader = new FileReader();
+
+      // reader.onloadend = function () {
+
+        // var id = "blobid" + (new Date()).getTime();
+
+        // var image = reader.result;
+
+      var urlString = "http://localhost:3000/api/v1/figmaimports/createupload";
+      var http = new XMLHttpRequest();
+      var formData = new FormData();
+      formData.append("website_id", "8afea140-a87b-461f-9dd7-7469034f91cb");
+      formData.append("image", image, "figma-image-5.png");
+
+      // formData.append("image", image);
+    
+      http.open("POST", urlString, true);
+      http.onreadystatechange = function () {
+    
+        if (http.readyState == XMLHttpRequest.DONE && http.status == 200) {
+    
+          console.log(http.response);
+    
+        }
+    
+      };
+    
+      http.send(formData);
+    // }
+
+    // if (file) {
+    //   reader.readAsDataURL(file);
+    // }
+    }
+  };
+
+  xhr.send(null);
+
+};
 
 
 var figmaImportPostReq = function () {
